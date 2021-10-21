@@ -1,0 +1,26 @@
+.card{
+     border: 1px solid rgb(138, 129, 129);
+     
+}
+.rigth{
+     float: right;
+}
+.modalblock{
+     width: 40%;
+     min-height: 42%;
+     position: fixed;
+     border: 1px solid #000;
+     background-color: white;
+     border-radius: 5px;
+     top:  20%;
+     left: 30%;
+}
+.signin{
+     display: flex;
+     justify-content: space-between;
+     
+}
+.exit{
+     background-color: white;
+     border: none;
+}

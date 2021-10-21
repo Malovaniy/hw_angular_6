@@ -1,0 +1,130 @@
+<nav class="navbar navbar-light bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand text-light">Angular blog</a>
+    <form class="d-flex" *ngIf="logined">
+      <button class="btn btn-outline-success mx-2" type="submit" (click)="signIn()">Sign-in</button>
+      <button class="btn btn-outline-primary" type="submit" (click)="signUp()">Sign-up</button>
+    </form>
+    <form class="d-flex" *ngIf="!logined">
+      <button class="btn btn-outline-success" type="submit" (click)="addPost()">Add post</button>
+      <button class="btn btn-warning" type="submit">{{nameLogined}}</button>
+      <button class="btn btn-outline-warning" type="submit" (click)="signOut()">Sign Out</button>
+    </form>
+  </div>
+</nav>
+
+
+
+<div *ngFor="let item of blogUsersPost, let i = index">
+  <div class="container my-3 card">
+    <div class="row">
+      <div class="col">
+        <div>
+          <div class="card-body">
+            <h5 class="card-title">{{item.topic}}</h5>
+            <p class="card-text posted  text-secondary">posted by: {{item.postedBy}}</p>
+            <p class="card-text posted  text-secondary">{{item.message}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div>
+          <div class="card-body rigth">
+            <p class="card-text ">⌚{{item.date | date: 'HH:mm, dd.MM.yyyy'}}</p>
+            <div *ngIf="item.postedBy==='admin'&& userOrAdmin">
+              <button class="btn btn-warning mx-2" (click)="editPost(i)">Edit</button>
+              <button class="btn btn-danger" (click)="deletePost(i)">Delete</button>
+            </div>
+            <div *ngIf="item.postedBy !='admin' && userLogined">
+              <button class="btn btn-warning mx-2" (click)="editPost(i)">Edit</button>
+              <button class="btn btn-danger" (click)="deletePost(i)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- modal sign-in -->
+<div class="modalblock" *ngIf="checkModal">
+  <div *ngIf="!signInOnUp">
+    <div class="signin  my-2 mx-2">
+      <h4 class="my-2">Sign in</h4>
+      <button class="exit" (click)="modalExit()">╳</button>
+    </div>
+    <hr style="opacity: 100">
+    <div class="signup mx-2">
+
+      <div class="mb-2">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" [(ngModel)]="email"
+          aria-describedby="emailHelp">
+      </div>
+      <div class="mb-2">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" [(ngModel)]="password" id="exampleInputPassword1">
+      </div>
+
+    </div>
+    <hr style="opacity: 100">
+    <button class="btn btn-outline-success mx-2" type="submit" (click)="modalExit()">Close</button>
+    <button class="btn btn-outline-primary" type="button" (click)="submit()">Submit</button>
+  </div>
+
+  <!-- modal sign-up  -->
+  <div *ngIf="signInOnUp">
+    <div class="signin  my-2 mx-2">
+      <h4 class="my-2">Sign Up</h4>
+      <button class="exit" (click)="modalExit()">╳</button>
+    </div>
+    <hr style="opacity: 100">
+    <div class="signup mx-2">
+      <div class="mb-2">
+        <label for="exampleInputEmail1" class="form-label">User name:</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" [(ngModel)]="newName"
+          aria-describedby="emailHelp">
+      </div>
+      <div class="mb-2">
+        <label for="exampleInputPassword1" class="form-label">Email:</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" [(ngModel)]="newEmail">
+      </div>
+      <div class="mb-2">
+        <label for="exampleInputPassword1" class="form-label">Password:</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" [(ngModel)]="newPassword">
+      </div>
+
+    </div>
+    <hr style="opacity: 100">
+    <button class="btn btn-outline-success mx-2 mb-3" type="submit" (click)="modalExit()">Close</button>
+    <button class="btn btn-outline-primary mb-3" type="submit" (click)="submitNewUser()">Submit</button>
+  </div>
+
+</div>
+
+<!-- modal addNewEl -->
+<div class="modalblock" *ngIf="newpost">
+  <div class="signin  my-2 mx-2">
+    <h4 class="my-2" *ngIf="!editOrAdd">Add post</h4>
+    <h4 class="my-2" *ngIf="editOrAdd">Edit post</h4>
+    <button class="exit" (click)="modalExit()">╳</button>
+  </div>
+  <hr style="opacity: 100">
+  <div class="signup mx-2">
+    <div class="mb-2">
+      <label for="exampleInputEmail1" class="form-label">Title:</label>
+      <input type="text" class="form-control" id="exampleInputEmail1" [(ngModel)]="postTitle"
+        aria-describedby="emailHelp">
+    </div>
+    <div class="mb-2">
+      <label for="exampleInputPassword1" class="form-label">Text:</label>
+      <textarea type="text" class="form-control" id="exampleInputPassword1" [(ngModel)]="postText"></textarea>
+    </div>
+
+
+  </div>
+  <hr style="opacity: 100">
+  <button class="btn btn-outline-success mx-2 mb-3" type="submit" (click)="modalExit()">Close</button>
+  <button class="btn btn-outline-primary mb-3" type="submit" *ngIf="!editOrAdd" (click)="newPost()">Post</button>
+  <button class="btn btn-outline-primary mb-3" type="submit" *ngIf="editOrAdd" (click)="saveEditPost()">Edit</button>
